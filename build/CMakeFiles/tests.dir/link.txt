@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/tests.dir/banking/Account.cpp.o CMakeFiles/tests.dir/banking/Transaction.cpp.o CMakeFiles/tests.dir/test/test.cpp.o -o tests  banking/libbanking.a lib/libgtest_main.a lib/libgtest.a 
+/usr/bin/c++ CMakeFiles/tests.dir/test/test.cpp.o CMakeFiles/tests.dir/banking/Account.cpp.o CMakeFiles/tests.dir/banking/Transaction.cpp.o -o tests  banking/libbanking.a lib/libgmock_main.a lib/libgmock.a lib/libgtest.a 

@@ -69,10 +69,24 @@ include CMakeFiles/tests.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/tests.dir/flags.make
 
+CMakeFiles/tests.dir/test/test.cpp.o: CMakeFiles/tests.dir/flags.make
+CMakeFiles/tests.dir/test/test.cpp.o: /home/vboxuser/lab05/test/test.cpp
+CMakeFiles/tests.dir/test/test.cpp.o: CMakeFiles/tests.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/lab05/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/tests.dir/test/test.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/tests.dir/test/test.cpp.o -MF CMakeFiles/tests.dir/test/test.cpp.o.d -o CMakeFiles/tests.dir/test/test.cpp.o -c /home/vboxuser/lab05/test/test.cpp
+
+CMakeFiles/tests.dir/test/test.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/tests.dir/test/test.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/vboxuser/lab05/test/test.cpp > CMakeFiles/tests.dir/test/test.cpp.i
+
+CMakeFiles/tests.dir/test/test.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/tests.dir/test/test.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/vboxuser/lab05/test/test.cpp -o CMakeFiles/tests.dir/test/test.cpp.s
+
 CMakeFiles/tests.dir/banking/Account.cpp.o: CMakeFiles/tests.dir/flags.make
 CMakeFiles/tests.dir/banking/Account.cpp.o: /home/vboxuser/lab05/banking/Account.cpp
 CMakeFiles/tests.dir/banking/Account.cpp.o: CMakeFiles/tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/lab05/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/tests.dir/banking/Account.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/lab05/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/tests.dir/banking/Account.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/tests.dir/banking/Account.cpp.o -MF CMakeFiles/tests.dir/banking/Account.cpp.o.d -o CMakeFiles/tests.dir/banking/Account.cpp.o -c /home/vboxuser/lab05/banking/Account.cpp
 
 CMakeFiles/tests.dir/banking/Account.cpp.i: cmake_force
@@ -86,7 +100,7 @@ CMakeFiles/tests.dir/banking/Account.cpp.s: cmake_force
 CMakeFiles/tests.dir/banking/Transaction.cpp.o: CMakeFiles/tests.dir/flags.make
 CMakeFiles/tests.dir/banking/Transaction.cpp.o: /home/vboxuser/lab05/banking/Transaction.cpp
 CMakeFiles/tests.dir/banking/Transaction.cpp.o: CMakeFiles/tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/lab05/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/tests.dir/banking/Transaction.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/lab05/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/tests.dir/banking/Transaction.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/tests.dir/banking/Transaction.cpp.o -MF CMakeFiles/tests.dir/banking/Transaction.cpp.o.d -o CMakeFiles/tests.dir/banking/Transaction.cpp.o -c /home/vboxuser/lab05/banking/Transaction.cpp
 
 CMakeFiles/tests.dir/banking/Transaction.cpp.i: cmake_force
@@ -97,35 +111,22 @@ CMakeFiles/tests.dir/banking/Transaction.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/tests.dir/banking/Transaction.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/vboxuser/lab05/banking/Transaction.cpp -o CMakeFiles/tests.dir/banking/Transaction.cpp.s
 
-CMakeFiles/tests.dir/test/test.cpp.o: CMakeFiles/tests.dir/flags.make
-CMakeFiles/tests.dir/test/test.cpp.o: /home/vboxuser/lab05/test/test.cpp
-CMakeFiles/tests.dir/test/test.cpp.o: CMakeFiles/tests.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/vboxuser/lab05/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/tests.dir/test/test.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/tests.dir/test/test.cpp.o -MF CMakeFiles/tests.dir/test/test.cpp.o.d -o CMakeFiles/tests.dir/test/test.cpp.o -c /home/vboxuser/lab05/test/test.cpp
-
-CMakeFiles/tests.dir/test/test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/tests.dir/test/test.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/vboxuser/lab05/test/test.cpp > CMakeFiles/tests.dir/test/test.cpp.i
-
-CMakeFiles/tests.dir/test/test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/tests.dir/test/test.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/vboxuser/lab05/test/test.cpp -o CMakeFiles/tests.dir/test/test.cpp.s
-
 # Object files for target tests
 tests_OBJECTS = \
+"CMakeFiles/tests.dir/test/test.cpp.o" \
 "CMakeFiles/tests.dir/banking/Account.cpp.o" \
-"CMakeFiles/tests.dir/banking/Transaction.cpp.o" \
-"CMakeFiles/tests.dir/test/test.cpp.o"
+"CMakeFiles/tests.dir/banking/Transaction.cpp.o"
 
 # External object files for target tests
 tests_EXTERNAL_OBJECTS =
 
+tests: CMakeFiles/tests.dir/test/test.cpp.o
 tests: CMakeFiles/tests.dir/banking/Account.cpp.o
 tests: CMakeFiles/tests.dir/banking/Transaction.cpp.o
-tests: CMakeFiles/tests.dir/test/test.cpp.o
 tests: CMakeFiles/tests.dir/build.make
 tests: banking/libbanking.a
-tests: lib/libgtest_main.a
+tests: lib/libgmock_main.a
+tests: lib/libgmock.a
 tests: lib/libgtest.a
 tests: CMakeFiles/tests.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/vboxuser/lab05/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable tests"
