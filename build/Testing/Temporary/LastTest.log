@@ -1,10 +1,10 @@
-Start testing: May 11 21:46 MSK
+Start testing: May 11 22:21 MSK
 ----------------------------------------------------------
 1/4 Testing: AccountTest.GetBalance
 1/4 Test: AccountTest.GetBalance
 Command: "/home/vboxuser/lab05/build/tests" "--gtest_filter=AccountTest.GetBalance" "--gtest_also_run_disabled_tests"
 Directory: /home/vboxuser/lab05/build
-"AccountTest.GetBalance" start time: May 11 21:46 MSK
+"AccountTest.GetBalance" start time: May 11 22:21 MSK
 Output:
 ----------------------------------------------------------
 Running main() from gmock_main.cc
@@ -17,13 +17,13 @@ Note: Google Test filter = AccountTest.GetBalance
 [----------] 1 test from AccountTest (0 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (2 ms total)
+[==========] 1 test from 1 test suite ran. (3 ms total)
 [  PASSED  ] 1 test.
 <end of output>
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"AccountTest.GetBalance" end time: May 11 21:46 MSK
+"AccountTest.GetBalance" end time: May 11 22:21 MSK
 "AccountTest.GetBalance" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -31,7 +31,7 @@ Test Passed.
 2/4 Test: AccountTest.ChangeBalance
 Command: "/home/vboxuser/lab05/build/tests" "--gtest_filter=AccountTest.ChangeBalance" "--gtest_also_run_disabled_tests"
 Directory: /home/vboxuser/lab05/build
-"AccountTest.ChangeBalance" start time: May 11 21:46 MSK
+"AccountTest.ChangeBalance" start time: May 11 22:21 MSK
 Output:
 ----------------------------------------------------------
 Running main() from gmock_main.cc
@@ -40,17 +40,17 @@ Note: Google Test filter = AccountTest.ChangeBalance
 [----------] Global test environment set-up.
 [----------] 1 test from AccountTest
 [ RUN      ] AccountTest.ChangeBalance
-[       OK ] AccountTest.ChangeBalance (1 ms)
-[----------] 1 test from AccountTest (1 ms total)
+[       OK ] AccountTest.ChangeBalance (0 ms)
+[----------] 1 test from AccountTest (0 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (3 ms total)
+[==========] 1 test from 1 test suite ran. (0 ms total)
 [  PASSED  ] 1 test.
 <end of output>
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"AccountTest.ChangeBalance" end time: May 11 21:46 MSK
+"AccountTest.ChangeBalance" end time: May 11 22:21 MSK
 "AccountTest.ChangeBalance" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -58,7 +58,7 @@ Test Passed.
 3/4 Test: TransactionTest.MakeTransaction
 Command: "/home/vboxuser/lab05/build/tests" "--gtest_filter=TransactionTest.MakeTransaction" "--gtest_also_run_disabled_tests"
 Directory: /home/vboxuser/lab05/build
-"TransactionTest.MakeTransaction" start time: May 11 21:46 MSK
+"TransactionTest.MakeTransaction" start time: May 11 22:21 MSK
 Output:
 ----------------------------------------------------------
 Running main() from gmock_main.cc
@@ -80,7 +80,7 @@ Balance 2 is 200
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"TransactionTest.MakeTransaction" end time: May 11 21:46 MSK
+"TransactionTest.MakeTransaction" end time: May 11 22:21 MSK
 "TransactionTest.MakeTransaction" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -88,7 +88,7 @@ Test Passed.
 4/4 Test: TransactionTest.MockDatabase
 Command: "/home/vboxuser/lab05/build/tests" "--gtest_filter=TransactionTest.MockDatabase" "--gtest_also_run_disabled_tests"
 Directory: /home/vboxuser/lab05/build
-"TransactionTest.MockDatabase" start time: May 11 21:46 MSK
+"TransactionTest.MockDatabase" start time: May 11 22:21 MSK
 Output:
 ----------------------------------------------------------
 Running main() from gmock_main.cc
@@ -101,14 +101,14 @@ Note: Google Test filter = TransactionTest.MockDatabase
 [----------] 1 test from TransactionTest (0 ms total)
 
 [----------] Global test environment tear-down
-[==========] 1 test from 1 test suite ran. (2 ms total)
+[==========] 1 test from 1 test suite ran. (0 ms total)
 [  PASSED  ] 1 test.
 <end of output>
 Test time =   0.01 sec
 ----------------------------------------------------------
 Test Passed.
-"TransactionTest.MockDatabase" end time: May 11 21:46 MSK
+"TransactionTest.MockDatabase" end time: May 11 22:21 MSK
 "TransactionTest.MockDatabase" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: May 11 21:46 MSK
+End testing: May 11 22:21 MSK
