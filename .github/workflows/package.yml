@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-          submodules: 'false'  # Явно отключаем обработку подмодулей
+          submodules: 'false'
 
       - name: Clean workspace
         shell: bash
@@ -34,9 +34,16 @@ jobs:
       - name: Configure CMake
         shell: bash
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release \
-            -DCPACK_DEBIAN_PACKAGE_MAINTAINER="koswos <kostikovassveta@gmail.com>" \
-            -DBUILD_TESTING=OFF  
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            cmake -B build -DCMAKE_BUILD_TYPE=Release \
+              -Dgtest_force_shared_crt=ON \
+              -DBUILD_SHARED_LIBS=ON \
+              -DCMAKE_CXX_FLAGS="/MD /EHsc" \
+              -DCPACK_DEBIAN_PACKAGE_MAINTAINER="koswos <kostikovassveta@gmail.com>"
+          else
+            cmake -B build -DCMAKE_BUILD_TYPE=Release \
+              -DCPACK_DEBIAN_PACKAGE_MAINTAINER="koswos <kostikovassveta@gmail.com>"
+          fi
 
       - name: Build
         shell: bash
