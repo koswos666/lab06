@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/vboxuser/lab05/banking/Account.cpp" "banking/CMakeFiles/banking.dir/Account.cpp.o" "gcc" "banking/CMakeFiles/banking.dir/Account.cpp.o.d"
-  "/home/vboxuser/lab05/banking/Transaction.cpp" "banking/CMakeFiles/banking.dir/Transaction.cpp.o" "gcc" "banking/CMakeFiles/banking.dir/Transaction.cpp.o.d"
+  "/home/vboxuser/lab06/banking/Account.cpp" "banking/CMakeFiles/banking.dir/Account.cpp.o" "gcc" "banking/CMakeFiles/banking.dir/Account.cpp.o.d"
+  "/home/vboxuser/lab06/banking/Transaction.cpp" "banking/CMakeFiles/banking.dir/Transaction.cpp.o" "gcc" "banking/CMakeFiles/banking.dir/Transaction.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

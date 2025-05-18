@@ -1,4 +1,4 @@
-# Install script for directory: /home/vboxuser/lab05/banking
+# Install script for directory: /home/vboxuser/lab06/banking
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

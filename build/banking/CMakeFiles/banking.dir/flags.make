@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/vboxuser/lab05/banking
+CXX_INCLUDES = -I/home/vboxuser/lab06/banking
 
 CXX_FLAGS = -std=gnu++17
 

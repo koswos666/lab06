@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/vboxuser/lab05/banking -isystem /home/vboxuser/lab05/build/_deps/googletest-src/googlemock/include -isystem /home/vboxuser/lab05/build/_deps/googletest-src/googlemock -isystem /home/vboxuser/lab05/build/_deps/googletest-src/googletest/include -isystem /home/vboxuser/lab05/build/_deps/googletest-src/googletest
+CXX_INCLUDES = -I/home/vboxuser/lab06/banking -isystem /home/vboxuser/lab06/build/_deps/googletest-src/googletest/include -isystem /home/vboxuser/lab06/build/_deps/googletest-src/googletest
 
-CXX_FLAGS = -std=gnu++17
+CXX_FLAGS =  -fprofile-arcs -ftest-coverage
 

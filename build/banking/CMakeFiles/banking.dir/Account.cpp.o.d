@@ -1,6 +1,6 @@
 banking/CMakeFiles/banking.dir/Account.cpp.o: \
- /home/vboxuser/lab05/banking/Account.cpp /usr/include/stdc-predef.h \
- /home/vboxuser/lab05/banking/Account.h /usr/include/c++/13/stdexcept \
+ /home/vboxuser/lab06/banking/Account.cpp /usr/include/stdc-predef.h \
+ /home/vboxuser/lab06/banking/Account.h /usr/include/c++/13/stdexcept \
  /usr/include/c++/13/exception \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \

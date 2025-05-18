@@ -1,0 +1,32 @@
+name: Package-RPM
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  package-rpm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install RPM dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm
+
+      - name: Configure CMake
+        run: cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Package RPM
+        run: cd build && cpack -G RPM
+
+      - name: Upload RPM artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: packages-rpm
+          path: build/*.rpm
