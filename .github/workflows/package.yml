@@ -32,8 +32,19 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update && sudo apt-get install -y rpm
 
-      - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCPACK_DEBIAN_PACKAGE_MAINTAINER="Your Name <email@example.com>"
+      - name: Configure CMake (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release `
+            -Dgtest_force_shared_crt=ON `
+            -DBUILD_SHARED_LIBS=ON `
+            -DCMAKE_CXX_FLAGS="/MD /EHsc"
+
+      - name: Configure CMake (Non-Windows)
+        if: matrix.os != 'windows-latest'
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release `
+            -DCPACK_DEBIAN_PACKAGE_MAINTAINER="Your Name <email@example.com>"
 
       - name: Build
         run: cmake --build build
