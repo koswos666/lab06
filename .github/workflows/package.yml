@@ -35,19 +35,26 @@ jobs:
         shell: bash
         run: |
           if [ "${{ runner.os }}" == "Windows" ]; then
-            cmake -B build -DCMAKE_BUILD_TYPE=Release \
+            # Специальная настройка для Windows
+            cmake -B build -G "Visual Studio 17 2022" -A x64 \
+              -DCMAKE_BUILD_TYPE=Release \
               -Dgtest_force_shared_crt=ON \
               -DBUILD_SHARED_LIBS=ON \
               -DCMAKE_CXX_FLAGS="/MD /EHsc" \
-              -DCPACK_DEBIAN_PACKAGE_MAINTAINER="koswos <kostikovassveta@gmail.com>"
+              -DCPACK_DEBIAN_PACKAGE_MAINTAINER="sveta <kostikovassveta@gmail.com>"
           else
             cmake -B build -DCMAKE_BUILD_TYPE=Release \
-              -DCPACK_DEBIAN_PACKAGE_MAINTAINER="koswos <kostikovassveta@gmail.com>"
+              -DCPACK_DEBIAN_PACKAGE_MAINTAINER="sveta <kostikovassveta@gmail.com>"
           fi
 
       - name: Build
         shell: bash
-        run: cmake --build build --config Release
+        run: |
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            cmake --build build --config Release -- /p:UseMultiToolTask=true /p:EnforceProcessCountAcrossBuilds=true
+          else
+            cmake --build build --config Release
+          fi
 
       - name: Package
         shell: bash
@@ -61,7 +68,7 @@ jobs:
               cpack -G DragNDrop
               ;;
             "Windows")
-              cpack -G WIX
+              cpack -G WIX -C Release
               ;;
           esac
 
