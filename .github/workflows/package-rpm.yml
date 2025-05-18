@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/upload-artifact@v4
       
       - name: Install RPM tools
         run: sudo apt-get install -y rpm
@@ -21,8 +20,7 @@ jobs:
           cmake --build build
           cd build && cpack -G RPM
 
-      - name: Upload RPM
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: packages-rpm
           path: build/*.rpm
