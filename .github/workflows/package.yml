@@ -5,6 +5,9 @@ on:
     tags:
       - v*
 
+env:
+  GIT_CLONE_FLAGS: "--depth=1 --no-tags"
+
 jobs:
   package:
     runs-on: ${{ matrix.os }}
@@ -14,56 +17,61 @@ jobs:
       fail-fast: false
 
     steps:
+      - name: Setup Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git config --global http.sslVerify false
+
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          persist-credentials: false
 
-      - name: Clean build directory
+      - name: Clean workspace
         shell: bash
-        run: rm -rf build/
-        if: matrix.os != 'windows-latest'
-
-      - name: Clean build directory (Windows)
-        shell: pwsh
-        run: Remove-Item -Recurse -Force build/ -ErrorAction Ignore
-        if: matrix.os == 'windows-latest'
+        run: |
+          rm -rf build/ || true
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            rd /s /q build 2> nul || true
+          fi
 
       - name: Install dependencies
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update && sudo apt-get install -y rpm
 
-      - name: Configure CMake (Windows)
-        if: matrix.os == 'windows-latest'
+      - name: Configure CMake
+        shell: bash
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release `
-            -Dgtest_force_shared_crt=ON `
-            -DBUILD_SHARED_LIBS=ON `
-            -DCMAKE_CXX_FLAGS="/MD /EHsc"
-
-      - name: Configure CMake (Non-Windows)
-        if: matrix.os != 'windows-latest'
-        run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release `
-            -DCPACK_DEBIAN_PACKAGE_MAINTAINER="Your Name <email@example.com>"
+          cmake -B build -DCMAKE_BUILD_TYPE=Release \
+            -DCPACK_DEBIAN_PACKAGE_MAINTAINER="Sveta <kostikovassveta@gmail.com>"
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            cmake --build build --target help
+          fi
 
       - name: Build
-        run: cmake --build build
+        shell: bash
+        run: cmake --build build --config Release
 
       - name: Package
         shell: bash
         run: |
           cd build
-          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-            cpack -G DEB
-          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
-            cpack -G DragNDrop
-          else
-            cpack -G WIX
-          fi
+          case "${{ runner.os }}" in
+            "Linux")
+              cpack -G DEB
+              ;;
+            "macOS")
+              cpack -G DragNDrop
+              ;;
+            "Windows")
+              cpack -G WIX
+              ;;
+          esac
 
       - uses: actions/upload-artifact@v4
         with:
-          name: packages-${{ matrix.os }}
-          path: build/*.${{ matrix.os == 'ubuntu-latest' && 'deb' || 
-                              matrix.os == 'macos-latest' && 'dmg' || 
-                              'msi' }}
+          name: packages-${{ runner.os }}
+          path: build/*.${{ runner.os == 'Linux' && 'deb' || 
+                             runner.os == 'macOS' && 'dmg' || 
+                             'msi' }}
