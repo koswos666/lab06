@@ -18,17 +18,22 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Clean build directory
+        shell: bash
+        run: rm -rf build/
+        if: matrix.os != 'windows-latest'
+
+      - name: Clean build directory (Windows)
+        shell: pwsh
+        run: Remove-Item -Recurse -Force build/ -ErrorAction Ignore
+        if: matrix.os == 'windows-latest'
+
       - name: Install dependencies
         if: matrix.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y rpm
+        run: sudo apt-get update && sudo apt-get install -y rpm
 
       - name: Configure CMake
-        run: |
-          rm -rf build/
-          cmake -B build -DCMAKE_BUILD_TYPE=Release \
-            -DCPACK_DEBIAN_PACKAGE_MAINTAINER="koswos <kostikovassveta@gmail.com>"
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCPACK_DEBIAN_PACKAGE_MAINTAINER="Your Name <email@example.com>"
 
       - name: Build
         run: cmake --build build
