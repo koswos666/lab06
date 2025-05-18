@@ -9,24 +9,19 @@ jobs:
   package-rpm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Install RPM dependencies
+      - name: Install RPM tools
+        run: sudo apt-get install -y rpm
+
+      - name: Build and Package
         run: |
-          sudo apt-get update
-          sudo apt-get install -y rpm
+          cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+          cd build && cpack -G RPM
 
-      - name: Configure CMake
-        run: cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
-
-      - name: Build
-        run: cmake --build build --config Release
-
-      - name: Package RPM
-        run: cd build && cpack -G RPM
-
-      - name: Upload RPM artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload RPM
+        uses: actions/upload-artifact@v4
         with:
           name: packages-rpm
           path: build/*.rpm
