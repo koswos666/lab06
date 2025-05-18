@@ -2,8 +2,7 @@ name: Package
 
 on:
   push:
-    tags:
-      - v*
+    tags: "*"
 
 jobs:
   package:
@@ -11,71 +10,69 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-      fail-fast: false
+    fail-fast: false
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          submodules: false
-          clean: true
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        submodules: false
+        clean: true
 
-      - name: Clean workspace
-        shell: bash
-        run: |
-          rm -rf build/ || true
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            cmd /c "rmdir /s /q build" 2> nul || true
-          fi
+    - name: Clean workspace
+      shell: bash
+      run: |
+        rm -rf build/ || true
+        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          rm -rf build\\ || true
+        fi
 
-      - name: Install dependencies (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo apt-get update && sudo apt-get install -y rpm
+    - name: Install dependencies
+      shell: bash
+      run: |
+        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          sudo apt-get update && sudo apt-get install -y rpm
+        fi
 
-      - name: Configure CMake
-        shell: bash
-        run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            # Специальная настройка для Windows
-            cmake -B build -G "Visual Studio 17 2022" -A x64 \
-              -DCMAKE_BUILD_TYPE=Release \
-              -Dgtest_force_shared_crt=ON \
-              -DBUILD_SHARED_LIBS=ON \
-              -DCMAKE_CXX_FLAGS="/MD /EHsc" \
-              -DCPACK_DEBIAN_PACKAGE_MAINTAINER="Sveta <kostikovassveta@gmail.com>"
-          else
-            cmake -B build -DCMAKE_BUILD_TYPE=Release \
-              -DCPACK_DEBIAN_PACKAGE_MAINTAINER="Sveta <kostikovassveta@gmail.com>"
-          fi
+    - name: Configure CMake
+      shell: bash
+      run: |
+        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          cmake -B build -G "Visual Studio 17 2022" -A x64 \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DCMAKE_CXX_FLAGS="/EHsc /W3"
+        else
+          cmake -B build -DCMAKE_BUILD_TYPE=Release \
+            -DCPACK_DEBIAN_PACKAGE_MAINTAINER="Sweta <hostikovasweta@gmail.com>"
+        fi
 
-      - name: Build
-        shell: bash
-        run: |
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            cmake --build build --config Release -- /m
-          else
-            cmake --build build --config Release
-          fi
+    - name: Build
+      shell: bash
+      run: |
+        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          cmake --build build --config Release -- /m
+        else
+          cmake --build build --config Release
+        fi
 
-      - name: Package
-        shell: bash
-        run: |
-          cd build
-          case "${{ runner.os }}" in
-            "Linux")
-              cpack -G DEB
-              ;;
-            "macOS")
-              cpack -G DragNDrop
-              ;;
-            "Windows")
-              cpack -G WIX -C Release
-              ;;
-          esac
+    - name: Package
+      shell: bash
+      run: |
+        cd build
+        case "${{ matrix.os }}" in
+          "ubuntu-latest")
+            cpack -C DEB
+            ;;
+          "macos-latest")
+            cpack -C DragNDrop
+            ;;
+          "windows-latest")
+            cpack -C WIX -C Release
+            ;;
+        esac
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: packages-${{ runner.os }}
-          path: build/*.${{ runner.os == 'Linux' && 'deb' || 
-                             runner.os == 'macOS' && 'dmg' || 
-                             'msi' }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: packages-${{ matrix.os }}
+        path: build/*.${{ matrix.os == 'ubuntu-latest' && 'deb' || matrix.os == 'macos-latest' && 'dmg' || 'msi' }}
