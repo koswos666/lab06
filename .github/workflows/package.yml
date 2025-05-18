@@ -5,9 +5,6 @@ on:
     tags:
       - v*
 
-env:
-  GIT_CLONE_FLAGS: "--depth=1 --no-tags"
-
 jobs:
   package:
     runs-on: ${{ matrix.os }}
@@ -17,16 +14,10 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Setup Git
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git config --global http.sslVerify false
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-          persist-credentials: false
+          submodules: 'false'  # Явно отключаем обработку подмодулей
 
       - name: Clean workspace
         shell: bash
@@ -44,10 +35,8 @@ jobs:
         shell: bash
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release \
-            -DCPACK_DEBIAN_PACKAGE_MAINTAINER="Sveta <kostikovassveta@gmail.com>"
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            cmake --build build --target help
-          fi
+            -DCPACK_DEBIAN_PACKAGE_MAINTAINER="koswos <kostikovassveta@gmail.com>" \
+            -DBUILD_TESTING=OFF  
 
       - name: Build
         shell: bash
