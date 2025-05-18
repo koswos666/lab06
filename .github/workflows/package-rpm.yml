@@ -10,15 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Install RPM tools
-        run: sudo apt-get install -y rpm
+        with:
+          fetch-depth: 0
 
-      - name: Build and Package
+      - name: Install RPM tools
+        run: sudo apt-get update && sudo apt-get install -y rpm
+
+      - name: Build
         run: |
-          cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release
+          rm -rf build/
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build
-          cd build && cpack -G RPM
+
+      - name: Package RPM
+        run: cd build && cpack -G RPM
 
       - uses: actions/upload-artifact@v4
         with:
