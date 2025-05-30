@@ -17,7 +17,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Раздельная установка зависимостей для каждой ОС
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
       run: |
@@ -48,8 +47,9 @@ jobs:
     - name: Create source archives
       run: |
         TAG_NAME=${GITHUB_REF#refs/tags/}
-        git archive -o "solver-$TAG_NAME-src.tar.gz" --prefix="solver-$TAG_NAME/" $GITHUB_REF
-        git archive -o "solver-$TAG_NAME-src.zip" --prefix="solver-$TAG_NAME/" $GITHUB_REF
+        # Создаем архивы в текущей директории
+        git archive -o "solver-${TAG_NAME}-src.tar.gz" --prefix="solver-${TAG_NAME}/" $GITHUB_REF
+        git archive -o "solver-${TAG_NAME}-src.zip" --prefix="solver-${TAG_NAME}/" $GITHUB_REF
       shell: bash
 
     - name: Generate packages
@@ -74,8 +74,10 @@ jobs:
           build/*.rpm
           build/*.dmg
           build/*.msi
-          ../solver-*-src.tar.gz
-          ../solver-*-src.zip
+          solver-*.tar.gz    # Изменено: без ..
+          solver-*.zip       # Изменено: без ..
+          solver-*-src.tar.gz
+          solver-*-src.zip
 
   create-release:
     needs: build-packages
