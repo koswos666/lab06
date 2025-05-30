@@ -1,19 +1,20 @@
 cmake_minimum_required(VERSION 3.10)
 project(solver VERSION 1.0.0)
 
-# Добавляем библиотеку solver
-add_subdirectory(solver_lib)
+# Библиотека solver
+add_library(solver_lib STATIC solver_lib/solver.cpp)
+target_include_directories(solver_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/solver_lib)
 
-# Создаем исполняемый файл
-add_executable(solver solver_lib/solver.cpp)
+# Исполняемый файл
+add_executable(solver solver_app/main.cpp)
 target_link_libraries(solver solver_lib)
 
-# Установка компонентов
+# Установка
 install(TARGETS solver DESTINATION bin)
 install(TARGETS solver_lib ARCHIVE DESTINATION lib)
 install(FILES solver_lib/solver.h DESTINATION include)
 
-# Настройка CPack
+# CPack
 set(CPACK_PACKAGE_NAME "solver")
 set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
 set(CPACK_PACKAGE_VENDOR "Koswos")
