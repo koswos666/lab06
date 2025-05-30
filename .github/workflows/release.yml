@@ -17,18 +17,25 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install dependencies
+    # Раздельная установка зависимостей для каждой ОС
+    - name: Install Linux dependencies
+      if: runner.os == 'Linux'
       run: |
-        if [ "$RUNNER_OS" = "Linux" ]; then
-          sudo apt-get update
-          sudo apt-get install -y build-essential cmake rpm
-        elif [ "$RUNNER_OS" = "macOS" ]; then
-          brew update
-          brew install cmake
-        elif [ "$RUNNER_OS" = "Windows" ]; then
-          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-          choco install wixtoolset
-        fi
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake rpm
+
+    - name: Install macOS dependencies
+      if: runner.os == 'macOS'
+      run: |
+        brew update
+        brew install cmake
+
+    - name: Install Windows dependencies
+      if: runner.os == 'Windows'
+      run: |
+        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        choco install wixtoolset
+      shell: powershell
 
     - name: Configure and build
       run: |
@@ -36,24 +43,27 @@ jobs:
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Release
         cmake --build . --config Release
+      shell: bash
 
     - name: Create source archives
       run: |
         TAG_NAME=${GITHUB_REF#refs/tags/}
         git archive -o "solver-$TAG_NAME-src.tar.gz" --prefix="solver-$TAG_NAME/" $GITHUB_REF
         git archive -o "solver-$TAG_NAME-src.zip" --prefix="solver-$TAG_NAME/" $GITHUB_REF
+      shell: bash
 
     - name: Generate packages
       run: |
         cd build
-        if [ "$RUNNER_OS" = "Linux" ]; then
+        if [[ "$RUNNER_OS" == "Linux" ]]; then
           cpack -G DEB
           cpack -G RPM
-        elif [ "$RUNNER_OS" = "macOS" ]; then
+        elif [[ "$RUNNER_OS" == "macOS" ]]; then
           cpack -G DragNDrop
-        elif [ "$RUNNER_OS" = "Windows" ]; then
+        elif [[ "$RUNNER_OS" == "Windows" ]]; then
           cpack -G WIX
         fi
+      shell: bash
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
