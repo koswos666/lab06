@@ -1,0 +1,90 @@
+name: Release Packages
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-packages:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, macos-12, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install dependencies
+      run: |
+        if [ "$RUNNER_OS" = "Linux" ]; then
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake rpm
+        elif [ "$RUNNER_OS" = "macOS" ]; then
+          brew update
+          brew install cmake
+        elif [ "$RUNNER_OS" = "Windows" ]; then
+          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+          choco install wixtoolset
+        fi
+
+    - name: Configure and build
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+        cmake --build . --config Release
+
+    - name: Create source archives
+      run: |
+        TAG_NAME=${GITHUB_REF#refs/tags/}
+        git archive -o "solver-$TAG_NAME-src.tar.gz" --prefix="solver-$TAG_NAME/" $GITHUB_REF
+        git archive -o "solver-$TAG_NAME-src.zip" --prefix="solver-$TAG_NAME/" $GITHUB_REF
+
+    - name: Generate packages
+      run: |
+        cd build
+        if [ "$RUNNER_OS" = "Linux" ]; then
+          cpack -G DEB
+          cpack -G RPM
+        elif [ "$RUNNER_OS" = "macOS" ]; then
+          cpack -G DragNDrop
+        elif [ "$RUNNER_OS" = "Windows" ]; then
+          cpack -G WIX
+        fi
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: packages-${{ runner.os }}
+        path: |
+          build/*.deb
+          build/*.rpm
+          build/*.dmg
+          build/*.msi
+          ../solver-*-src.tar.gz
+          ../solver-*-src.zip
+
+  create-release:
+    needs: build-packages
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        name: Solver ${{ github.ref_name }}
+        files: |
+          artifacts/**/*.deb
+          artifacts/**/*.rpm
+          artifacts/**/*.dmg
+          artifacts/**/*.msi
+          artifacts/**/*.tar.gz
+          artifacts/**/*.zip
