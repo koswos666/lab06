@@ -51,8 +51,18 @@ jobs:
         git archive -o "solver-${TAG_NAME}-src.tar.gz" --prefix="solver-${TAG_NAME}/" $GITHUB_REF
         git archive -o "solver-${TAG_NAME}-src.zip" --prefix="solver-${TAG_NAME}/" $GITHUB_REF
       shell: bash
-
-    - name: Generate packages
+        - name: List installed files
+      run: |
+        cd build
+        echo "=== Installed files structure ==="
+        find . -type f | grep -i 'install_manifest.txt' || echo "No install manifest found"
+        if [ -f install_manifest.txt ]; then
+          cat install_manifest.txt
+        fi
+        echo "=== Directory structure ==="
+        tree || ls -R
+      shell: bash
+        - name: Generate packages
       run: |
         cd build
         if [[ "$RUNNER_OS" == "Linux" ]]; then
@@ -61,7 +71,14 @@ jobs:
         elif [[ "$RUNNER_OS" == "macOS" ]]; then
           cpack -G DragNDrop
         elif [[ "$RUNNER_OS" == "Windows" ]]; then
-          cpack -G WIX
+          # Пробуем простую генерацию без сложных настроек
+          cpack -G WIX --config ./CPackConfig.cmake
+          
+          # Сохраняем логи при ошибке
+          if [ $? -ne 0 ]; then
+            echo "=== WiX Log ==="
+            find . -name '*.log' -exec cat {} \;
+          fi
         fi
       shell: bash
 

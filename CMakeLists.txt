@@ -28,21 +28,32 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Equation solver library and application")
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 
+
 if(WIN32)
-    # Явно указываем архитектуру
+  
     set(CPACK_WIX_ARCHITECTURE "x64")
     
-    # Указываем явные GUID
-    set(CPACK_WIX_UPGRADE_GUID "YOUR_UPGRADE_GUID")
-    set(CPACK_WIX_PRODUCT_GUID "YOUR_PRODUCT_GUID")
-    
-    # Указываем путь к лицензии
+   
+    set(CPACK_WIX_UPGRADE_GUID "D6E4D0F0-7A3B-4A5C-9D1E-0F2A3B4C5D6E") 
+    set(CPACK_WIX_PRODUCT_GUID "A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D") 
     set(CPACK_WIX_LICENSE_RTF "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.rtf")
     
-    
-    # Явно определяем компоненты установки
+   
     set(CPACK_COMPONENTS_ALL applications libraries headers)
+    
+ 
+    set(CPACK_WIX_UI_REF "WixUI_InstallDir")
+    
+   
+    set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/app_icon.ico")
+    set(CPACK_WIX_UPGRADE_GUID "${CPACK_WIX_UPGRADE_GUID}")
+    set(CPACK_WIX_CULTURES "en-US")
+    set(CPACK_WIX_TEMPLATE "${CMAKE_CURRENT_SOURCE_DIR}/wix_template.xml")
+    
+    
+    set(CPACK_WIX_SKIP_WIX_UI_EXTENSION TRUE)
 endif()
+
 
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER ${CPACK_PACKAGE_CONTACT})
