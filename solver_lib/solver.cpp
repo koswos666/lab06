@@ -1,14 +1,19 @@
 #include "solver.h"
 #include <cmath>
-#include <stdexcept>  
 
-void solve(float a, float b, float c, float& x1, float& x2) {
-    float d = b * b - 4 * a * c;
+Solution solve(double a, double b, double c) {
+    double discriminant = b*b - 4*a*c;
+    Solution s;
     
-    if (d < 0) {
-        throw std::runtime_error("Discriminant is negative");
+    if (discriminant > 0) {
+        s.x1 = (-b + sqrt(discriminant)) / (2*a);
+        s.x2 = (-b - sqrt(discriminant)) / (2*a);
+    } else if (discriminant == 0) {
+        s.x1 = s.x2 = -b / (2*a);
+    } else {
+       
+        s.x1 = s.x2 = NAN;
     }
-
-    x1 = (-b - std::sqrt(d)) / (2 * a);
-    x2 = (-b + std::sqrt(d)) / (2 * a);
+    
+    return s;
 }

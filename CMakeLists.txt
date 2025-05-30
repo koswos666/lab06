@@ -3,10 +3,15 @@ project(solver VERSION 1.0.0)
 
 # Библиотека solver
 add_library(solver_lib STATIC solver_lib/solver.cpp)
-target_include_directories(solver_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/solver_lib)
+target_include_directories(solver_lib PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/solver_lib
+)
 
 # Исполняемый файл
 add_executable(solver solver_app/main.cpp)
+target_include_directories(solver PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/solver_lib
+)
 target_link_libraries(solver solver_lib)
 
 # Установка

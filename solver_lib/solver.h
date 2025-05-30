@@ -1,3 +1,11 @@
-#pragma once
+#ifndef SOLVER_H
+#define SOLVER_H
 
-void solve(float a, float b, float c, float& x1, float& x2);
+struct Solution {
+    double x1;
+    double x2;
+};
+
+Solution solve(double a, double b, double c);
+
+#endif
