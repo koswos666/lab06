@@ -28,10 +28,20 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Equation solver library and application")
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 
-
 if(WIN32)
+    # Явно указываем архитектуру
+    set(CPACK_WIX_ARCHITECTURE "x64")
+    
+    # Указываем явные GUID
+    set(CPACK_WIX_UPGRADE_GUID "YOUR_UPGRADE_GUID")
+    set(CPACK_WIX_PRODUCT_GUID "YOUR_PRODUCT_GUID")
+    
+    # Указываем путь к лицензии
     set(CPACK_WIX_LICENSE_RTF "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.rtf")
-    set(CPACK_WIX_UPGRADE_GUID "YOUR_GUID_HERE") 
+    
+    
+    # Явно определяем компоненты установки
+    set(CPACK_COMPONENTS_ALL applications libraries headers)
 endif()
 
 

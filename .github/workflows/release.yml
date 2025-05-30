@@ -100,3 +100,20 @@ jobs:
           artifacts/**/*.msi
           artifacts/**/*.tar.gz
           artifacts/**/*.zip
+    - name: Generate packages
+      run: |
+        cd build
+        if [[ "$RUNNER_OS" == "Linux" ]]; then
+          cpack -G DEB
+          cpack -G RPM
+        elif [[ "$RUNNER_OS" == "macOS" ]]; then
+          cpack -G DragNDrop
+        elif [[ "$RUNNER_OS" == "Windows" ]]; then
+          # Запускаем CPack с подробным выводом
+          cpack -V -G WIX
+          
+          # Сохраняем логи WiX
+          echo "=== WiX log ==="
+          cat .CPack_Packages/*/WIX/*.log || echo "No log found"
+        fi
+      shell: bash
