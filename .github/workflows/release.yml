@@ -17,24 +17,19 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install Linux dependencies
-      if: runner.os == 'Linux'
+    - name: Install dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential cmake rpm tree
-
-    - name: Install macOS dependencies
-      if: runner.os == 'macOS'
-      run: |
-        brew update
-        brew install cmake tree
-
-    - name: Install Windows dependencies
-      if: runner.os == 'Windows'
-      run: |
-        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-        choco install wixtoolset
-      shell: powershell
+        if [[ "$RUNNER_OS" == "Linux" ]]; then
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake rpm tree
+        elif [[ "$RUNNER_OS" == "macOS" ]]; then
+          brew update
+          brew install cmake tree
+        elif [[ "$RUNNER_OS" == "Windows" ]]; then
+          choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+          choco install wixtoolset
+        fi
+      shell: bash
 
     - name: Configure and build
       run: |
@@ -51,32 +46,18 @@ jobs:
         git archive -o "solver-${TAG_NAME}-src.zip" --prefix="solver-${TAG_NAME}/" $GITHUB_REF
       shell: bash
 
-    - name: List installed files
+    - name: Generate packages
       run: |
         cd build
-        echo "=== Installed files structure ==="
-        find . -type f | grep -i 'install_manifest.txt' || echo "No install manifest found"
-        if [ -f install_manifest.txt ]; then
-          cat install_manifest.txt
+        if [[ "$RUNNER_OS" == "Linux" ]]; then
+          cpack -G DEB
+          cpack -G RPM
+        elif [[ "$RUNNER_OS" == "macOS" ]]; then
+          cpack -G DragNDrop
+        elif [[ "$RUNNER_OS" == "Windows" ]]; then
+          cpack -G WIX --config ../CPackConfig.cmake || (find . -name '*.log' -exec cat {} \; && false)
         fi
-        echo "=== Directory structure ==="
-        tree || ls -R
       shell: bash
-
-    - name: Generate packages
-  run: |
-    cd build
-    if [[ "$RUNNER_OS" == "Windows" ]]; then
-      # Очистка предыдущих попыток
-      rm -rf .CPack_Packages || true
-      
-      # Генерация с подробным логом
-      cpack -G WIX --verbose --debug || (find . -name '*.log' -exec cat {} \; && exit 1)
-    else
-      # Остальные платформы
-      cpack -G DEB && cpack -G RPM || cpack -G DragNDrop
-    fi
-  shell: bash
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
