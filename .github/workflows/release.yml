@@ -21,13 +21,13 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake rpm
+        sudo apt-get install -y build-essential cmake rpm tree
 
     - name: Install macOS dependencies
       if: runner.os == 'macOS'
       run: |
         brew update
-        brew install cmake
+        brew install cmake tree
 
     - name: Install Windows dependencies
       if: runner.os == 'Windows'
@@ -47,11 +47,11 @@ jobs:
     - name: Create source archives
       run: |
         TAG_NAME=${GITHUB_REF#refs/tags/}
-        # Создаем архивы в текущей директории
         git archive -o "solver-${TAG_NAME}-src.tar.gz" --prefix="solver-${TAG_NAME}/" $GITHUB_REF
         git archive -o "solver-${TAG_NAME}-src.zip" --prefix="solver-${TAG_NAME}/" $GITHUB_REF
       shell: bash
-        - name: List installed files
+
+    - name: List installed files
       run: |
         cd build
         echo "=== Installed files structure ==="
@@ -62,7 +62,8 @@ jobs:
         echo "=== Directory structure ==="
         tree || ls -R
       shell: bash
-        - name: Generate packages
+
+    - name: Generate packages
       run: |
         cd build
         if [[ "$RUNNER_OS" == "Linux" ]]; then
@@ -71,7 +72,6 @@ jobs:
         elif [[ "$RUNNER_OS" == "macOS" ]]; then
           cpack -G DragNDrop
         elif [[ "$RUNNER_OS" == "Windows" ]]; then
-          # Пробуем простую генерацию без сложных настроек
           cpack -G WIX --config ./CPackConfig.cmake
           
           # Сохраняем логи при ошибке
@@ -91,8 +91,6 @@ jobs:
           build/*.rpm
           build/*.dmg
           build/*.msi
-          solver-*.tar.gz    # Изменено: без ..
-          solver-*.zip       # Изменено: без ..
           solver-*-src.tar.gz
           solver-*-src.zip
 
@@ -117,20 +115,3 @@ jobs:
           artifacts/**/*.msi
           artifacts/**/*.tar.gz
           artifacts/**/*.zip
-    - name: Generate packages
-      run: |
-        cd build
-        if [[ "$RUNNER_OS" == "Linux" ]]; then
-          cpack -G DEB
-          cpack -G RPM
-        elif [[ "$RUNNER_OS" == "macOS" ]]; then
-          cpack -G DragNDrop
-        elif [[ "$RUNNER_OS" == "Windows" ]]; then
-          # Запускаем CPack с подробным выводом
-          cpack -V -G WIX
-          
-          # Сохраняем логи WiX
-          echo "=== WiX log ==="
-          cat .CPack_Packages/*/WIX/*.log || echo "No log found"
-        fi
-      shell: bash
