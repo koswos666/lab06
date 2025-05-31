@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Product Id="*" 
-             Name="$(var.ProductName)" 
-             Language="1033" 
-             Version="$(var.ProductVersion)"
-             Manufacturer="$(var.Manufacturer)" 
-             UpgradeCode="$(var.UpgradeCode)">
+             Name="Solver" 
+             Language="1033"
+             Version="1.2.0"
+             Manufacturer="Koswos"
+             UpgradeCode="D6E4D0F0-7A3B-4A5C-9D1E-0F2A3B4C5D6E"> <!-- Используйте ваш UpgradeGUID -->
         
         <Package InstallerVersion="200" 
                  Compressed="yes" 
                  InstallScope="perMachine"/>
         
-        <MajorUpgrade DowngradeErrorMessage="A newer version is already installed." />
+        <MajorUpgrade DowngradeErrorMessage="A newer version of Solver is already installed." />
         <MediaTemplate EmbedCab="yes" />
         
-        <Feature Id="MainFeature" Title="Main Application" Level="1">
+        <Feature Id="MainApplication" Title="Solver Application" Level="1">
             <ComponentRef Id="ApplicationFiles" />
         </Feature>
         
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFiles64Folder">
-                <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)">
+                <Directory Id="INSTALLDIR" Name="Solver">
                     <Component Id="ApplicationFiles" Guid="*">
-                        <File Source="$(var.SourceDir)\solver.exe" />
+                        <File Source="solver.exe" KeyPath="yes" />
                     </Component>
                 </Directory>
             </Directory>
         </Directory>
+        
+        <UIRef Id="WixUI_InstallDir" />
     </Product>
 </Wix>

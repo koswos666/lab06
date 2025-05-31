@@ -46,18 +46,23 @@ jobs:
         git archive -o "solver-${TAG_NAME}-src.zip" --prefix="solver-${TAG_NAME}/" $GITHUB_REF
       shell: bash
 
-    - name: Generate packages
-      run: |
-        cd build
-        if [[ "$RUNNER_OS" == "Linux" ]]; then
-          cpack -G DEB
-          cpack -G RPM
-        elif [[ "$RUNNER_OS" == "macOS" ]]; then
-          cpack -G DragNDrop
-        elif [[ "$RUNNER_OS" == "Windows" ]]; then
-          cpack -G WIX --config ../CPackConfig.cmake || (find . -name '*.log' -exec cat {} \; && false)
-        fi
-      shell: bash
+     - name: Generate packages
+  run: |
+    cd build
+    if [[ "$RUNNER_OS" == "Linux" ]]; then
+      cpack -G DEB
+      cpack -G RPM
+    elif [[ "$RUNNER_OS" == "macOS" ]]; then
+      cpack -G DragNDrop
+    elif [[ "$RUNNER_OS" == "Windows" ]]; then
+      # Создаем простую структуру для WiX
+      mkdir -p bin
+      cp Release/solver.exe bin/ || cp solver.exe bin/
+      
+      # Генерация пакета
+      cpack -G WIX -C Release --verbose || (find . -name '*.log' -exec cat {} \; && false)
+    fi
+  shell: bash
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
