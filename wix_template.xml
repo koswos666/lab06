@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Product Id="*" 
-             Name="Solver" 
+             Name="$(var.ProductName)" 
              Language="1033" 
              Version="$(var.ProductVersion)"
              Manufacturer="$(var.Manufacturer)" 
@@ -8,30 +9,23 @@
         
         <Package InstallerVersion="200" 
                  Compressed="yes" 
-                 InstallScope="perMachine"
-                 Platform="x64"/>
+                 InstallScope="perMachine"/>
         
-        <MajorUpgrade DowngradeErrorMessage="A newer version of Solver is already installed." />
+        <MajorUpgrade DowngradeErrorMessage="A newer version is already installed." />
         <MediaTemplate EmbedCab="yes" />
         
-        <Feature Id="ProductFeature" Title="Solver" Level="1">
-            <ComponentGroupRef Id="ProductComponents" />
+        <Feature Id="MainFeature" Title="Main Application" Level="1">
+            <ComponentRef Id="ApplicationFiles" />
         </Feature>
         
-        <UIRef Id="WixUI_InstallDir" />
-    </Product>
-    
-    <Fragment>
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFiles64Folder">
-                <Directory Id="INSTALLFOLDER" Name="Solver" />
+                <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)">
+                    <Component Id="ApplicationFiles" Guid="*">
+                        <File Source="$(var.SourceDir)\solver.exe" />
+                    </Component>
+                </Directory>
             </Directory>
         </Directory>
-    </Fragment>
-    
-    <Fragment>
-        <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-            <!-- Файлы будут добавлены автоматически -->
-        </ComponentGroup>
-    </Fragment>
+    </Product>
 </Wix>
