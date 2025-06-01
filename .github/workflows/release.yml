@@ -80,10 +80,10 @@ jobs:
     needs: build-packages
     runs-on: ubuntu-latest
     steps:
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
+    - name: Checkout code 
+      uses: actions/checkout@v4
       with:
-        path: artifacts
+        fetch-depth: 0
 
     - name: Delete existing tag if needed
       if: github.ref_type == 'tag'
