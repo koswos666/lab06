@@ -60,8 +60,6 @@ jobs:
         elif [[ "$RUNNER_OS" == "Windows" ]]; then
           mkdir -p bin
           cp Release/solver.exe bin/ || cp solver.exe bin/
-          
-         
           cpack -G WIX -C Release --verbose || (find . -name '*.log' -exec cat {} \; && false)
         fi
       shell: bash
@@ -87,10 +85,18 @@ jobs:
       with:
         path: artifacts
 
+    - name: Delete existing tag if needed
+      if: github.ref_type == 'tag'
+      run: |
+        git tag -d ${{ github.ref_name }}
+        git push --delete origin ${{ github.ref_name }} || true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref }}
+        tag_name: ${{ github.ref_name }}
         name: Solver ${{ github.ref_name }}
         files: |
           artifacts/**/*.deb
@@ -99,3 +105,6 @@ jobs:
           artifacts/**/*.msi
           artifacts/**/*.tar.gz
           artifacts/**/*.zip
+        draft: false
+        prerelease: false
+        generate_release_notes: true
